@@ -40,10 +40,14 @@ public class CalibrationOpMode extends LinearOpMode {
 
         while (opModeIsActive()) {
             // Show the elapsed game time and wheel power.
-            mecanumHelper.move(0, 1);
 
-            if (teamHardwareMap.runTime.milliseconds() > 10000) {
-                stop();
+
+            if (teamHardwareMap.runTime.milliseconds() < 10000) {
+                mecanumHelper.move(0, 1);
+            }
+            else
+            {
+                mecanumHelper.move(0, 0);
             }
 
             telemetry.addData("Status", "Run Time: " + teamHardwareMap.runTime.toString());
