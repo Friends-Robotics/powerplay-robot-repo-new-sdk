@@ -39,7 +39,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(name="April Tags Test", group = "Tests")
+@Autonomous(name = "April Tags Test", group = "Tests")
 public class AprilTagsTestOpMode extends LinearOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -158,153 +158,134 @@ public class AprilTagsTestOpMode extends LinearOpMode {
         }
 
 
-
-            switch (tagOfInterest.id)
-            {
-                case LEFT:
-                    if (opModeIsActive())
-                    {
-                        move_Left();
-                        wait_For_Motors();
-                        reset_Encoders();
-                        move_Forward();
-                        wait_For_Motors();
-                        end_Of_Opmode();
-                    }
-                    break;
-                case MIDDLE:
-                    if (opModeIsActive())
-                    {
-                        move_Forward();
-                        wait_For_Motors();
-                        end_Of_Opmode();
-                        end_Of_Opmode();
+        switch (tagOfInterest.id) {
+            case LEFT:
+                if (opModeIsActive()) {
+                    move_Left();
+                    wait_For_Motors();
+                    reset_Encoders();
+                    move_Forward();
+                    wait_For_Motors();
+                    end_Of_Opmode();
+                }
+                break;
+            case MIDDLE:
+                if (opModeIsActive()) {
+                    move_Forward();
+                    wait_For_Motors();
+                    end_Of_Opmode();
+                    end_Of_Opmode();
                         /* second one is cause android studio underlines this and says it's the same as default
                         which is true but it's annoying, shouldn't affect performance
                         */
-                    }
-                    break;
-                case RIGHT:
-                    if (opModeIsActive())
-                    {
-                        move_Right();
-                        wait_For_Motors();
-                        reset_Encoders();
-                        move_Forward();
-                        wait_For_Motors();
-                        end_Of_Opmode();
-                    }
-                    break;
-                default:
-                    if (opModeIsActive())
-                    {
-                        move_Forward();
-                        wait_For_Motors();
-                        end_Of_Opmode();
-                    }
-                    break;
-            }
+                }
+                break;
+            case RIGHT:
+                if (opModeIsActive()) {
+                    move_Right();
+                    wait_For_Motors();
+                    reset_Encoders();
+                    move_Forward();
+                    wait_For_Motors();
+                    end_Of_Opmode();
+                }
+                break;
+            default:
+                if (opModeIsActive()) {
+                    move_Forward();
+                    wait_For_Motors();
+                    end_Of_Opmode();
+                }
+                break;
         }
+    }
 
 
+    private void tagToTelemetry(AprilTagDetection detection) {
+        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
+        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER));
+        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER));
+        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER));
+        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
+        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
+        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+    }
 
-        private void tagToTelemetry(AprilTagDetection detection)
-        {
-            telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-            telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER));
-            telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER));
-            telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER));
-            telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
-            telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
-            telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+    private void move_Forward() {
+        teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-1.4 * 569));
+        teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
+        teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
+        teamHardwareMap.frontRightMotor.setTargetPosition((int) (-1.4 * -569));
+
+        set_Motors();
+    }
+
+    private void move_Left() {
+        teamHardwareMap.frontLeftMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
+        teamHardwareMap.backRightMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
+        teamHardwareMap.backLeftMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
+        teamHardwareMap.frontRightMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
+
+        set_Motors();
+    }
+
+    private void move_Right() {
+        teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+        teamHardwareMap.backRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+        teamHardwareMap.backLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+        teamHardwareMap.frontRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+
+        set_Motors();
+    }
+
+    private void stop_Motors() {
+        teamHardwareMap.frontLeftMotor.setPower(0);
+        teamHardwareMap.backRightMotor.setPower(0);
+        teamHardwareMap.backLeftMotor.setPower(0);
+        teamHardwareMap.frontRightMotor.setPower(0);
+    }
+
+    private void reset_Encoders() {
+        teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    private void set_Motors() {
+        teamHardwareMap.frontLeftMotor.setPower(0.2);
+        teamHardwareMap.backRightMotor.setPower(0.2);
+        teamHardwareMap.backLeftMotor.setPower(0.2);
+        teamHardwareMap.frontRightMotor.setPower(0.2);
+
+        teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    private void request_Encoder_Values() {
+        telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+        telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+        telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+        telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+        telemetry.update();
+    }
+
+    private void end_Of_Opmode() {
+        while (opModeIsActive()) {
+            stop_Motors();
         }
+    }
 
-        private void move_Forward()
-        {
-            teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-1.4 * 569));
-            teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
-            teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
-            teamHardwareMap.frontRightMotor.setTargetPosition((int) (-1.4 * -569));
-
-            set_Motors();
+    private void wait_For_Motors() {
+        while (teamHardwareMap.backLeftMotor.isBusy() ||
+                teamHardwareMap.backRightMotor.isBusy() ||
+                teamHardwareMap.frontLeftMotor.isBusy() ||
+                teamHardwareMap.frontRightMotor.isBusy()) {
+            request_Encoder_Values();
         }
-
-        private void move_Left()
-        {
-            teamHardwareMap.frontLeftMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
-            teamHardwareMap.backRightMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
-            teamHardwareMap.backLeftMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
-            teamHardwareMap.frontRightMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
-
-            set_Motors();
-        }
-
-        private void move_Right()
-        {
-            teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-            teamHardwareMap.backRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-            teamHardwareMap.backLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-            teamHardwareMap.frontRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-
-            set_Motors();
-        }
-
-        private void stop_Motors()
-        {
-            teamHardwareMap.frontLeftMotor.setPower(0);
-            teamHardwareMap.backRightMotor.setPower(0);
-            teamHardwareMap.backLeftMotor.setPower(0);
-            teamHardwareMap.frontRightMotor.setPower(0);
-        }
-
-        private void reset_Encoders()
-        {
-            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-
-        private void set_Motors()
-        {
-            teamHardwareMap.frontLeftMotor.setPower(0.2);
-            teamHardwareMap.backRightMotor.setPower(0.2);
-            teamHardwareMap.backLeftMotor.setPower(0.2);
-            teamHardwareMap.frontRightMotor.setPower(0.2);
-
-            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        }
-
-        private void request_Encoder_Values()
-        {
-            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
-            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
-            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
-            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
-            telemetry.update();
-        }
-
-        private void end_Of_Opmode()
-        {
-            while(opModeIsActive())
-            {
-                stop_Motors();
-            }
-        }
-
-        private void wait_For_Motors()
-        {
-            while(teamHardwareMap.backLeftMotor.isBusy() ||
-                    teamHardwareMap.backRightMotor.isBusy() ||
-                    teamHardwareMap.frontLeftMotor.isBusy() ||
-                    teamHardwareMap.frontRightMotor.isBusy() )
-            {
-                request_Encoder_Values();
-            }
-        }
+    }
 
 
 }
