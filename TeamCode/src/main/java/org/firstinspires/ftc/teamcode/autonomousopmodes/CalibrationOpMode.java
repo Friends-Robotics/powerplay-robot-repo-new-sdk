@@ -36,26 +36,27 @@ public class CalibrationOpMode extends LinearOpMode {
         waitForStart();
         teamHardwareMap.runTime.reset();
 
-        MecanumHelper mecanumHelper = new MecanumHelper(teamHardwareMap.frontRightMotor, teamHardwareMap.backRightMotor, teamHardwareMap.backLeftMotor, teamHardwareMap.frontLeftMotor);
+        MecanumHelper mecanumHelper = new MecanumHelper(teamHardwareMap.frontRightMotor, teamHardwareMap.backRightMotor, teamHardwareMap.backLeftMotor, teamHardwareMap.frontLeftMotor, true);
 
         while (opModeIsActive()) {
             // Show the elapsed game time and wheel power.
 
-
+            /*
             if (teamHardwareMap.runTime.milliseconds() < 10000) {
                 mecanumHelper.move(0, 1);
+
+                telemetry.addData("Status", "Run Time: " + teamHardwareMap.runTime.toString());
+                telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                telemetry.update();
             }
             else
             {
                 mecanumHelper.move(0, 0);
             }
-
-            telemetry.addData("Status", "Run Time: " + teamHardwareMap.runTime.toString());
-            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
-            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
-            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
-            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
-            telemetry.update();
+             */
 
         }
     }

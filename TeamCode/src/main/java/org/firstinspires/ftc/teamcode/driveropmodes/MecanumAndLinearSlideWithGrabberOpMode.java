@@ -36,7 +36,7 @@ public class MecanumAndLinearSlideWithGrabberOpMode extends LinearOpMode {
         waitForStart();
         teamHardwareMap.runTime.reset();
 
-        MecanumHelper mecanumHelper = new MecanumHelper(teamHardwareMap.frontRightMotor, teamHardwareMap.backRightMotor, teamHardwareMap.backLeftMotor, teamHardwareMap.frontLeftMotor);
+        MecanumHelper mecanumHelper = new MecanumHelper(teamHardwareMap.frontRightMotor, teamHardwareMap.backRightMotor, teamHardwareMap.backLeftMotor, teamHardwareMap.frontLeftMotor, false);
 
         boolean dpadUpPressed = false;
         boolean dpadDownPressed = false;

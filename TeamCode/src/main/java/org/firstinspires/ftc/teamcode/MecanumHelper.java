@@ -17,12 +17,19 @@ public class MecanumHelper {
 
     public double speed;
 
-    public MecanumHelper(DcMotor frontRightMotor, DcMotor backRightMotor, DcMotor backLeftMotor, DcMotor frontLeftMotor) {
+    public MecanumHelper(DcMotor frontRightMotor, DcMotor backRightMotor, DcMotor backLeftMotor, DcMotor frontLeftMotor, boolean useTargetPos) {
         this.frontRightMotor = frontRightMotor;
         this.backRightMotor = backRightMotor;
         this.backLeftMotor = backLeftMotor;
         this.frontLeftMotor = frontLeftMotor;
         this.speed = 1;
+
+        if (useTargetPos) {
+            frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
     }
 
     public void SetMotorPower(Motor motor, double power) {
@@ -97,5 +104,12 @@ public class MecanumHelper {
         SetMotorPower(Motor.BLW, x * turningSlowDownConstant);
         SetMotorPower(Motor.FRW, -x * turningSlowDownConstant);
         SetMotorPower(Motor.BRW, -x * turningSlowDownConstant);
+    }
+
+    public void autonomousForward() {
+        SetMotorPower(Motor.BLW, 0.2);
+        SetMotorPower(Motor.BRW, 0.2);
+        SetMotorPower(Motor.FLW, 0);
+        SetMotorPower(Motor.FRW, 0);
     }
 }

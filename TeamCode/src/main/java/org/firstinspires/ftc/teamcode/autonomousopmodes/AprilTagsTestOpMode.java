@@ -23,9 +23,12 @@ package org.firstinspires.ftc.teamcode.autonomousopmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.MecanumHelper;
+import org.firstinspires.ftc.teamcode.hardware.MecanumMotorsLinearSlideGrabberHardwareMap;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -54,11 +57,14 @@ public class AprilTagsTestOpMode extends LinearOpMode
     double tagsize = 0.166;
 
     // tag IDs 1, 2, 3 from 36h11 family
-    int LEFT = 1;
-    int MIDDLE = 2;
-    int RIGHT = 3;
+    final int LEFT = 1;
+    final int MIDDLE = 2;
+    final int RIGHT = 3;
 
     AprilTagDetection tagOfInterest = null;
+
+    private MecanumMotorsLinearSlideGrabberHardwareMap teamHardwareMap;
+    boolean firstDone = false;
 
     @Override
     public void runOpMode()
@@ -85,6 +91,11 @@ public class AprilTagsTestOpMode extends LinearOpMode
 
         telemetry.setMsTransmissionInterval(50);
 
+        teamHardwareMap = new MecanumMotorsLinearSlideGrabberHardwareMap(hardwareMap);
+        MecanumHelper mecanumHelper = new MecanumHelper(teamHardwareMap.frontRightMotor, teamHardwareMap.backRightMotor, teamHardwareMap.backLeftMotor, teamHardwareMap.frontLeftMotor, true);
+        teamHardwareMap.runTime.reset();
+        firstDone = false;
+
         /*
          * The INIT-loop:
          * This REPLACES waitForStart!
@@ -99,7 +110,7 @@ public class AprilTagsTestOpMode extends LinearOpMode
 
                 for(AprilTagDetection tag : currentDetections)
                 {
-                    //if(tag.id == LEFT || tag.id == MIDDLE  || tag.id == RIGHT)
+                    if(tag.id == LEFT || tag.id == MIDDLE  || tag.id == RIGHT)
                     {
                         tagOfInterest = tag;
                         tagFound = true;
@@ -180,18 +191,141 @@ public class AprilTagsTestOpMode extends LinearOpMode
              * Insert your autonomous code here, probably using the tag pose to decide your configuration.
              */
 
-            // e.g.
-            if(tagOfInterest.pose.x <= 20)
-            {
-                // do something
-            }
-            else if(tagOfInterest.pose.x >= 20 && tagOfInterest.pose.x <= 50)
-            {
-                // do something else
-            }
-            else if(tagOfInterest.pose.x >= 50)
-            {
-                // do something else
+            switch (tagOfInterest.id) {
+                case LEFT:
+                    while (opModeIsActive()) {
+                        telemetry.addData("DONE", firstDone);
+
+                        if (!firstDone) {
+                            teamHardwareMap.frontLeftMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
+                            teamHardwareMap.backRightMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
+                            teamHardwareMap.backLeftMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
+                            teamHardwareMap.frontRightMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
+                            teamHardwareMap.frontLeftMotor.setPower(0.2);
+                            teamHardwareMap.backRightMotor.setPower(0.2);
+                            teamHardwareMap.backLeftMotor.setPower(0.2);
+                            teamHardwareMap.frontRightMotor.setPower(0.2);
+
+                            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                            telemetry.update();
+                        }
+
+                        if (!firstDone && Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7) {
+                            firstDone = true;
+                            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                        }
+
+                        if (firstDone) {
+                            teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-1.4 * 569));
+                            teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
+                            teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
+                            teamHardwareMap.frontRightMotor.setTargetPosition((int) (-1.4 * -569));
+                            teamHardwareMap.frontLeftMotor.setPower(0.2);
+                            teamHardwareMap.backRightMotor.setPower(0.2);
+                            teamHardwareMap.backLeftMotor.setPower(0.2);
+                            teamHardwareMap.frontRightMotor.setPower(0.2);
+
+                            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                            telemetry.update();
+                        }
+                    }
+                    break;
+
+                case MIDDLE:
+                    teamHardwareMap.frontLeftMotor.setTargetPosition((int)(-1.4 * 569));
+                    teamHardwareMap.backRightMotor.setTargetPosition((int)(-1.4 * 569));
+                    teamHardwareMap.backLeftMotor.setTargetPosition((int)(-1.4 * -569));
+                    teamHardwareMap.frontRightMotor.setTargetPosition((int)(-1.4 * -569));
+                    teamHardwareMap.frontLeftMotor.setPower(0.2);
+                    teamHardwareMap.backRightMotor.setPower(0.2);
+                    teamHardwareMap.backLeftMotor.setPower(0.2);
+                    teamHardwareMap.frontRightMotor.setPower(0.2);
+
+                    teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                    telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                    telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                    telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                    telemetry.update();
+                    break;
+
+                case RIGHT:
+                    if (!firstDone) {
+                        teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+                        teamHardwareMap.backRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+                        teamHardwareMap.backLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+                        teamHardwareMap.frontRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+                        teamHardwareMap.frontLeftMotor.setPower(0.2);
+                        teamHardwareMap.backRightMotor.setPower(0.2);
+                        teamHardwareMap.backLeftMotor.setPower(0.2);
+                        teamHardwareMap.frontRightMotor.setPower(0.2);
+
+                        teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                        telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                        telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                        telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                        telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                        telemetry.update();
+                    }
+
+                    if (!firstDone && Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3) {
+                        firstDone = true;
+                        teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                        teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                        teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                        teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    }
+
+                    if (firstDone) {
+                        teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-1.4 * 569));
+                        teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
+                        teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
+                        teamHardwareMap.frontRightMotor.setTargetPosition((int) (-1.4 * -569));
+                        teamHardwareMap.frontLeftMotor.setPower(0.2);
+                        teamHardwareMap.backRightMotor.setPower(0.2);
+                        teamHardwareMap.backLeftMotor.setPower(0.2);
+                        teamHardwareMap.frontRightMotor.setPower(0.2);
+
+                        teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                        telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                        telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                        telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                        telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                        telemetry.addData("DONE", teamHardwareMap.backRightMotor.getCurrentPosition());
+                        telemetry.update();
+                    }
+                    break;
             }
         }
 
