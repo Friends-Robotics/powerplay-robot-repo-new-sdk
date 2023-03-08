@@ -157,16 +157,7 @@ public class AprilTagsTestOpMode extends LinearOpMode {
             telemetry.update();
         }
 
-        /* Actually do something useful */
-        if (tagOfInterest == null) {
-            /*
-             * Insert your autonomous code here, presumably running some default configuration
-             * since the tag was never sighted during INIT
-             */
-        } else {
-            /*
-             * Insert your autonomous code here, probably using the tag pose to decide your configuration.
-             */
+
 
             switch (tagOfInterest.id)
             {
@@ -214,7 +205,7 @@ public class AprilTagsTestOpMode extends LinearOpMode {
                     break;
             }
         }
-    }
+
 
 
         private void tagToTelemetry(AprilTagDetection detection)
