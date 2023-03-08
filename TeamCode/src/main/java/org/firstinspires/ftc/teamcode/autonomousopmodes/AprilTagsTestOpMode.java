@@ -37,8 +37,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @TeleOp(name="April Tags Test", group="tests")
-public class AprilTagsTestOpMode extends LinearOpMode
-{
+public class AprilTagsTestOpMode extends LinearOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -67,24 +66,20 @@ public class AprilTagsTestOpMode extends LinearOpMode
     boolean firstDone = false;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                camera.startStreaming(1920,1080, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                camera.startStreaming(1920, 1080, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
 
             }
         });
@@ -100,55 +95,40 @@ public class AprilTagsTestOpMode extends LinearOpMode
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
-        while (!isStarted() && !isStopRequested())
-        {
+        while (!isStarted() && !isStopRequested()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-            if(currentDetections.size() != 0)
-            {
+            if (currentDetections.size() != 0) {
                 boolean tagFound = false;
 
-                for(AprilTagDetection tag : currentDetections)
-                {
-                    if(tag.id == LEFT || tag.id == MIDDLE  || tag.id == RIGHT)
-                    {
+                for (AprilTagDetection tag : currentDetections) {
+                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
                         tagOfInterest = tag;
                         tagFound = true;
                         break;
                     }
                 }
 
-                if(tagFound)
-                {
+                if (tagFound) {
                     telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
-                }
-                else
-                {
+                } else {
                     telemetry.addLine("Don't see tag of interest :(");
 
-                    if(tagOfInterest == null)
-                    {
+                    if (tagOfInterest == null) {
                         telemetry.addLine("(The tag has never been seen)");
-                    }
-                    else
-                    {
+                    } else {
                         telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
                         tagToTelemetry(tagOfInterest);
                     }
                 }
 
-            }
-            else
-            {
+            } else {
                 telemetry.addLine("Don't see tag of interest :(");
 
-                if(tagOfInterest == null)
-                {
+                if (tagOfInterest == null) {
                     telemetry.addLine("(The tag has never been seen)");
-                }
-                else
-                {
+                } else {
                     telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
                     tagToTelemetry(tagOfInterest);
                 }
@@ -165,28 +145,22 @@ public class AprilTagsTestOpMode extends LinearOpMode
          */
 
         /* Update the telemetry */
-        if(tagOfInterest != null)
-        {
+        if (tagOfInterest != null) {
             telemetry.addLine("Tag snapshot:\n");
             tagToTelemetry(tagOfInterest);
             telemetry.update();
-        }
-        else
-        {
+        } else {
             telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
             telemetry.update();
         }
 
         /* Actually do something useful */
-        if(tagOfInterest == null)
-        {
+        if (tagOfInterest == null) {
             /*
              * Insert your autonomous code here, presumably running some default configuration
              * since the tag was never sighted during INIT
              */
-        }
-        else
-        {
+        } else {
             /*
              * Insert your autonomous code here, probably using the tag pose to decide your configuration.
              */
@@ -222,15 +196,39 @@ public class AprilTagsTestOpMode extends LinearOpMode
                             }
 
 
-                        if (!firstDone && Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7) {
-                            firstDone = true;
-                            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                        }
+                            if (!firstDone && Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7) {
+                                firstDone = true;
+                                teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                                teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                                teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                                teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            }
 
-                        if (firstDone) {
+                            if (firstDone) {
+                                teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-1.4 * 569));
+                                teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
+                                teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
+                                teamHardwareMap.frontRightMotor.setTargetPosition((int) (-1.4 * -569));
+                                teamHardwareMap.frontLeftMotor.setPower(0.2);
+                                teamHardwareMap.backRightMotor.setPower(0.2);
+                                teamHardwareMap.backLeftMotor.setPower(0.2);
+                                teamHardwareMap.frontRightMotor.setPower(0.2);
+
+                                teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                                telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                                telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                                telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                                telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                                telemetry.update();
+                            }
+                        }
+                        break;
+
+                        case MIDDLE:
                             teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-1.4 * 569));
                             teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
                             teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
@@ -250,102 +248,82 @@ public class AprilTagsTestOpMode extends LinearOpMode
                             telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
                             telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
                             telemetry.update();
-                        }
+                            break;
+
+                        case RIGHT:
+                            if (!firstDone) {
+                                teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+                                teamHardwareMap.backRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+                                teamHardwareMap.backLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+                                teamHardwareMap.frontRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
+                                teamHardwareMap.frontLeftMotor.setPower(0.2);
+                                teamHardwareMap.backRightMotor.setPower(0.2);
+                                teamHardwareMap.backLeftMotor.setPower(0.2);
+                                teamHardwareMap.frontRightMotor.setPower(0.2);
+
+                                teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                                telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                                telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                                telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                                telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                                telemetry.update();
+                            }
+
+                            if (!firstDone && Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3) {
+                                firstDone = true;
+                                teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                                teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                                teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                                teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                            }
+
+                            if (firstDone) {
+                                teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-1.4 * 569));
+                                teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
+                                teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
+                                teamHardwareMap.frontRightMotor.setTargetPosition((int) (-1.4 * -569));
+                                teamHardwareMap.frontLeftMotor.setPower(0.2);
+                                teamHardwareMap.backRightMotor.setPower(0.2);
+                                teamHardwareMap.backLeftMotor.setPower(0.2);
+                                teamHardwareMap.frontRightMotor.setPower(0.2);
+
+                                teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                                teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                                telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+                                telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+                                telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+                                telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+                                telemetry.addData("DONE", teamHardwareMap.backRightMotor.getCurrentPosition());
+                                telemetry.update();
+                            }
+                            break;
                     }
-                    break;
+            }
 
-                case MIDDLE:
-                    teamHardwareMap.frontLeftMotor.setTargetPosition((int)(-1.4 * 569));
-                    teamHardwareMap.backRightMotor.setTargetPosition((int)(-1.4 * 569));
-                    teamHardwareMap.backLeftMotor.setTargetPosition((int)(-1.4 * -569));
-                    teamHardwareMap.frontRightMotor.setTargetPosition((int)(-1.4 * -569));
-                    teamHardwareMap.frontLeftMotor.setPower(0.2);
-                    teamHardwareMap.backRightMotor.setPower(0.2);
-                    teamHardwareMap.backLeftMotor.setPower(0.2);
-                    teamHardwareMap.frontRightMotor.setPower(0.2);
 
-                    teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                    telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
-                    telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
-                    telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
-                    telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
-                    telemetry.update();
-                    break;
-
-                case RIGHT:
-                    if (!firstDone) {
-                        teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-                        teamHardwareMap.backRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-                        teamHardwareMap.backLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-                        teamHardwareMap.frontRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-                        teamHardwareMap.frontLeftMotor.setPower(0.2);
-                        teamHardwareMap.backRightMotor.setPower(0.2);
-                        teamHardwareMap.backLeftMotor.setPower(0.2);
-                        teamHardwareMap.frontRightMotor.setPower(0.2);
-
-                        teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                        telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
-                        telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
-                        telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
-                        telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
-                        telemetry.update();
-                    }
-
-                    if (!firstDone && Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 3) {
-                        firstDone = true;
-                        teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                        teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                        teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                        teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    }
-
-                    if (firstDone) {
-                        teamHardwareMap.frontLeftMotor.setTargetPosition((int) (-1.4 * 569));
-                        teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
-                        teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
-                        teamHardwareMap.frontRightMotor.setTargetPosition((int) (-1.4 * -569));
-                        teamHardwareMap.frontLeftMotor.setPower(0.2);
-                        teamHardwareMap.backRightMotor.setPower(0.2);
-                        teamHardwareMap.backLeftMotor.setPower(0.2);
-                        teamHardwareMap.frontRightMotor.setPower(0.2);
-
-                        teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                        telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
-                        telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
-                        telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
-                        telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
-                        telemetry.addData("DONE", teamHardwareMap.backRightMotor.getCurrentPosition());
-                        telemetry.update();
-                    }
-                    break;
+            /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
+            while (opModeIsActive()) {
+                sleep(20);
             }
         }
-
-
-        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
-        while (opModeIsActive()) {sleep(20);}
     }
 
-    void tagToTelemetry(AprilTagDetection detection)
-    {
-        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
-        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
-        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
-        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+        private void tagToTelemetry(AprilTagDetection detection)
+        {
+            telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
+            telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER));
+            telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER));
+            telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER));
+            telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
+            telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
+            telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+        }
     }
-}
+
