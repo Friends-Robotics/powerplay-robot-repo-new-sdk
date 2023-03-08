@@ -174,18 +174,10 @@ public class AprilTagsTestOpMode extends LinearOpMode {
                     if (opModeIsActive())
                     {
                         move_Left();
-                        while(teamHardwareMap.backLeftMotor.isBusy() ||
-                                teamHardwareMap.backRightMotor.isBusy() ||
-                                teamHardwareMap.frontLeftMotor.isBusy() ||
-                                teamHardwareMap.frontRightMotor.isBusy() )
-                        {}
+                        wait_For_Motors();
                         reset_Encoders();
                         move_Forward();
-                        while(teamHardwareMap.backLeftMotor.isBusy() ||
-                                teamHardwareMap.backRightMotor.isBusy() ||
-                                teamHardwareMap.frontLeftMotor.isBusy() ||
-                                teamHardwareMap.frontRightMotor.isBusy() )
-                        {}
+                        wait_For_Motors();
                         end_Of_Opmode();
                     }
                     break;
@@ -193,11 +185,7 @@ public class AprilTagsTestOpMode extends LinearOpMode {
                     if (opModeIsActive())
                     {
                         move_Forward();
-                        while(teamHardwareMap.backLeftMotor.isBusy() ||
-                                teamHardwareMap.backRightMotor.isBusy() ||
-                                teamHardwareMap.frontLeftMotor.isBusy() ||
-                                teamHardwareMap.frontRightMotor.isBusy() )
-                        {}
+                        wait_For_Motors();
                         end_Of_Opmode();
                         end_Of_Opmode();
                         /* second one is cause android studio underlines this and says it's the same as default
@@ -209,18 +197,10 @@ public class AprilTagsTestOpMode extends LinearOpMode {
                     if (opModeIsActive())
                     {
                         move_Right();
-                        while(teamHardwareMap.backLeftMotor.isBusy() ||
-                                teamHardwareMap.backRightMotor.isBusy() ||
-                                teamHardwareMap.frontLeftMotor.isBusy() ||
-                                teamHardwareMap.frontRightMotor.isBusy() )
-                        {}
+                        wait_For_Motors();
                         reset_Encoders();
                         move_Forward();
-                        while(teamHardwareMap.backLeftMotor.isBusy() ||
-                                teamHardwareMap.backRightMotor.isBusy() ||
-                                teamHardwareMap.frontLeftMotor.isBusy() ||
-                                teamHardwareMap.frontRightMotor.isBusy() )
-                        {}
+                        wait_For_Motors();
                         end_Of_Opmode();
                     }
                     break;
@@ -228,11 +208,7 @@ public class AprilTagsTestOpMode extends LinearOpMode {
                     if (opModeIsActive())
                     {
                         move_Forward();
-                        while(teamHardwareMap.backLeftMotor.isBusy() ||
-                                teamHardwareMap.backRightMotor.isBusy() ||
-                                teamHardwareMap.frontLeftMotor.isBusy() ||
-                                teamHardwareMap.frontRightMotor.isBusy() )
-                        {}
+                        wait_For_Motors();
                         end_Of_Opmode();
                     }
                     break;
@@ -258,21 +234,8 @@ public class AprilTagsTestOpMode extends LinearOpMode {
             teamHardwareMap.backRightMotor.setTargetPosition((int) (-1.4 * 569));
             teamHardwareMap.backLeftMotor.setTargetPosition((int) (-1.4 * -569));
             teamHardwareMap.frontRightMotor.setTargetPosition((int) (-1.4 * -569));
-            teamHardwareMap.frontLeftMotor.setPower(0.2);
-            teamHardwareMap.backRightMotor.setPower(0.2);
-            teamHardwareMap.backLeftMotor.setPower(0.2);
-            teamHardwareMap.frontRightMotor.setPower(0.2);
 
-            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
-            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
-            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
-            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
-            telemetry.update();
+            set_Motors();
         }
 
         private void move_Left()
@@ -281,21 +244,8 @@ public class AprilTagsTestOpMode extends LinearOpMode {
             teamHardwareMap.backRightMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
             teamHardwareMap.backLeftMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
             teamHardwareMap.frontRightMotor.setTargetPosition((int) (0.235 * 9.8 * 288));
-            teamHardwareMap.frontLeftMotor.setPower(0.2);
-            teamHardwareMap.backRightMotor.setPower(0.2);
-            teamHardwareMap.backLeftMotor.setPower(0.2);
-            teamHardwareMap.frontRightMotor.setPower(0.2);
 
-            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
-            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
-            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
-            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
-            telemetry.update();
+            set_Motors();
         }
 
         private void move_Right()
@@ -304,21 +254,8 @@ public class AprilTagsTestOpMode extends LinearOpMode {
             teamHardwareMap.backRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
             teamHardwareMap.backLeftMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
             teamHardwareMap.frontRightMotor.setTargetPosition((int) (-0.235 * 9.8 * 288));
-            teamHardwareMap.frontLeftMotor.setPower(0.2);
-            teamHardwareMap.backRightMotor.setPower(0.2);
-            teamHardwareMap.backLeftMotor.setPower(0.2);
-            teamHardwareMap.frontRightMotor.setPower(0.2);
 
-            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
-            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
-            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
-            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
-            telemetry.update();
+            set_Motors();
         }
 
         private void stop_Motors()
@@ -337,11 +274,44 @@ public class AprilTagsTestOpMode extends LinearOpMode {
             teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
 
+        private void set_Motors()
+        {
+            teamHardwareMap.frontLeftMotor.setPower(0.2);
+            teamHardwareMap.backRightMotor.setPower(0.2);
+            teamHardwareMap.backLeftMotor.setPower(0.2);
+            teamHardwareMap.frontRightMotor.setPower(0.2);
+
+            teamHardwareMap.frontRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            teamHardwareMap.backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            teamHardwareMap.backLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            teamHardwareMap.frontLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+        private void request_Encoder_Values()
+        {
+            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getCurrentPosition());
+            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getCurrentPosition());
+            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getCurrentPosition());
+            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
+            telemetry.update();
+        }
+
         private void end_Of_Opmode()
         {
             while(opModeIsActive())
             {
                 stop_Motors();
+            }
+        }
+
+        private void wait_For_Motors()
+        {
+            while(teamHardwareMap.backLeftMotor.isBusy() ||
+                    teamHardwareMap.backRightMotor.isBusy() ||
+                    teamHardwareMap.frontLeftMotor.isBusy() ||
+                    teamHardwareMap.frontRightMotor.isBusy() )
+            {
+                request_Encoder_Values();
             }
         }
 
