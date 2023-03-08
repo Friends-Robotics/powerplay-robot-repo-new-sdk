@@ -217,10 +217,10 @@ public class AprilTagsTestOpMode extends LinearOpMode
                             telemetry.addData("BRW", teamHardwareMap.backRightMotor.getCurrentPosition());
                             telemetry.update();
 
-                            if (!firstDone && Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7) {
+                            if (Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 20 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 20 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 20 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 20) {
                                 firstDone = true;
                             }
-                        }
+
 
                         if (!firstDone && Math.abs(teamHardwareMap.frontLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.backLeftMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7 && Math.abs(teamHardwareMap.frontRightMotor.getCurrentPosition() - (int) (0.235 * 9.8 * 288)) < 7) {
                             firstDone = true;
