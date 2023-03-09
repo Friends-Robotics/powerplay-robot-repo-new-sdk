@@ -157,47 +157,60 @@ public class AprilTagsTestOpMode extends LinearOpMode {
             telemetry.update();
         }
 
+        if (tagOfInterest != null) {
 
-        switch (tagOfInterest.id) {
-            case LEFT:
-                if (opModeIsActive()) {
-                    move_Left();
-                    wait_For_Motors();
-                    reset_Encoders();
-                    move_Forward();
-                    wait_For_Motors();
-                    end_Of_Opmode();
-                }
-                break;
-            case MIDDLE:
-                if (opModeIsActive()) {
-                    move_Forward();
-                    wait_For_Motors();
-                    end_Of_Opmode();
-                    end_Of_Opmode();
+
+            switch (tagOfInterest.id) {
+                case LEFT:
+                    if (opModeIsActive()) {
+                        move_Left();
+                        wait_For_Motors();
+                        reset_Encoders();
+                        move_Forward();
+                        wait_For_Motors();
+                        end_Of_Opmode();
+                    }
+                    break;
+                case MIDDLE:
+                    if (opModeIsActive()) {
+                        move_Forward();
+                        wait_For_Motors();
+                        end_Of_Opmode();
+                        end_Of_Opmode();
                         /* second one is cause android studio underlines this and says it's the same as default
                         which is true but it's annoying, shouldn't affect performance
                         */
-                }
-                break;
-            case RIGHT:
-                if (opModeIsActive()) {
-                    move_Right();
-                    wait_For_Motors();
-                    reset_Encoders();
-                    move_Forward();
-                    wait_For_Motors();
-                    end_Of_Opmode();
-                }
-                break;
-            default:
-                if (opModeIsActive()) {
-                    move_Forward();
-                    wait_For_Motors();
-                    end_Of_Opmode();
-                }
-                break;
+                    }
+                    break;
+                case RIGHT:
+                    if (opModeIsActive()) {
+                        move_Right();
+                        wait_For_Motors();
+                        reset_Encoders();
+                        move_Forward();
+                        wait_For_Motors();
+                        end_Of_Opmode();
+                    }
+                    break;
+                default:
+                    if (opModeIsActive()) {
+                        move_Forward();
+                        wait_For_Motors();
+                        end_Of_Opmode();
+                    }
+                    break;
+            }
         }
+        else
+        {
+            if (opModeIsActive()) {
+                move_Forward();
+                wait_For_Motors();
+                end_Of_Opmode();
+            }
+        }
+
+
     }
 
 
