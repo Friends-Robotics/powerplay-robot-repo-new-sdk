@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.driveropmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.teamcode.hardware.LinearSlideWithGrabberHardwareMap
 
 
 @TeleOp(name="Servo Test 08-02-23", group="Linear Opmode")
+@Disabled
 public class ServoTest080223OpMode extends LinearOpMode {
 
     private LinearSlideWithGrabberHardwareMap teamHardwareMap;

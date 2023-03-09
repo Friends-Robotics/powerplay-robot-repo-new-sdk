@@ -34,6 +34,7 @@ import android.os.Environment;
 
 import androidx.annotation.RequiresApi;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.vuforia.Image;
@@ -57,6 +58,7 @@ import java.io.IOException;
  * is explained below.
  */
 @TeleOp(name = "Barcode Scanner", group = "Linear Opmode")
+@Disabled
 public class BarcodeScannerOpMode extends LinearOpMode {
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which

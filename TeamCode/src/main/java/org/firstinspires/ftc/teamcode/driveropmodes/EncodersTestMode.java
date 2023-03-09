@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.driveropmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @TeleOp(name="EncodersTestMode", group="Linear Opmode")
+@Disabled
 public class EncodersTestMode extends LinearOpMode {
 
     private encoderTestHardwareMap teamHardwareMap;

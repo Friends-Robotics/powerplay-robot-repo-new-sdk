@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.driveropmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.teamcode.hardware.DrivetrainOnlyTeamHardwareMap;
  */
 
 @TeleOp(name="One controller (tank)", group="Linear Opmode")
+@Disabled
 public class OneControllerOpMode extends LinearOpMode {
 
     private DrivetrainOnlyTeamHardwareMap teamHardwareMap;
