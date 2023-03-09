@@ -22,7 +22,7 @@ public class MecanumHelper {
         this.backRightMotor = backRightMotor;
         this.backLeftMotor = backLeftMotor;
         this.frontLeftMotor = frontLeftMotor;
-        this.speed = 1;
+        this.speed = 0.6;
 
         if (useTargetPos) {
             frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
