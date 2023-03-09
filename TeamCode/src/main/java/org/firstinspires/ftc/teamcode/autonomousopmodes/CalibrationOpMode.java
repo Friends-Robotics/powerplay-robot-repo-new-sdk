@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomousopmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumHelper;
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.teamcode.hardware.MecanumMotorsLinearSlideGrabberHa
  */
 
 @Autonomous(name="Mecanum Calibration", group="tests")
+@Disabled
 public class CalibrationOpMode extends LinearOpMode {
 
     private MecanumMotorsLinearSlideGrabberHardwareMap teamHardwareMap;

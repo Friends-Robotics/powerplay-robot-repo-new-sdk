@@ -38,14 +38,13 @@ public class MecanumAndLinearSlideWithGrabberOpMode extends LinearOpMode {
 
         MecanumHelper mecanumHelper = new MecanumHelper(teamHardwareMap.frontRightMotor, teamHardwareMap.backRightMotor, teamHardwareMap.backLeftMotor, teamHardwareMap.frontLeftMotor, false);
 
-        boolean dpadUpPressed = false;
-        boolean dpadDownPressed = false;
-        boolean grabberToggled = false;
+        boolean bumperRightPressed = false;
+        boolean bumperLeftPressed = false;
 
         while (opModeIsActive()) {
             double leftStickYInput = -gamepad1.left_stick_y;
             double leftStickXInput = gamepad1.left_stick_x;
-            double rightStickYInput = -gamepad2.right_stick_y;
+            double leftStickYInput2 = -gamepad2.left_stick_y;
             double rightStickXInput = gamepad1.right_stick_x;
 
             if (rightStickXInput == 0) {
@@ -55,30 +54,34 @@ public class MecanumAndLinearSlideWithGrabberOpMode extends LinearOpMode {
                 mecanumHelper.rotate(rightStickXInput);
             }
 
-            teamHardwareMap.linearSlide.setPower(rightStickYInput / 1.5);
+            teamHardwareMap.linearSlide.setPower(leftStickYInput2 / 1.5);
             //if (rightStickXInput == 0) teamHardwareMap.linearSlide.setPower(0.1);
 
-            if (gamepad2.circle) { // in
+            if (gamepad2.cross) { // in
                 teamHardwareMap.grabberLeft.setPosition(1);
                 teamHardwareMap.grabberRight.setPosition(0);
             }
-            if (gamepad2.cross) { // out
-                teamHardwareMap.grabberLeft.setPosition(0.54);
-                teamHardwareMap.grabberRight.setPosition(0.48);
+            if (gamepad2.circle) { // out
+
+                //teamHardwareMap.grabberLeft.setPosition(0.54);
+                //teamHardwareMap.grabberRight.setPosition(0.48);
+                teamHardwareMap.grabberLeft.setPosition(0.60);
+                teamHardwareMap.grabberRight.setPosition(0.42);
+
             }
 
-            if (gamepad1.dpad_up && !dpadUpPressed) {
+            if (gamepad1.right_bumper && !bumperRightPressed) {
                 mecanumHelper.speed += 0.1;
                 if (mecanumHelper.speed > 1) mecanumHelper.speed = 1;
-                dpadUpPressed = true;
+                bumperRightPressed = true;
             }
-            if (!gamepad1.dpad_up) dpadUpPressed = false;
-            if (gamepad1.dpad_down && !dpadDownPressed) {
+            if (!gamepad1.right_bumper) bumperRightPressed = false;
+            if (gamepad1.left_bumper && !bumperLeftPressed) {
                 mecanumHelper.speed -= 0.1;
                 if (mecanumHelper.speed < 0) mecanumHelper.speed = 0;
-                dpadDownPressed = true;
+                bumperLeftPressed = true;
             }
-            if (!gamepad1.dpad_down) dpadDownPressed = false;
+            if (!gamepad1.left_bumper) bumperLeftPressed = false;
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + teamHardwareMap.runTime.toString());
