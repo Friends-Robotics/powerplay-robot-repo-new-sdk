@@ -87,15 +87,12 @@ public class MecanumAndLinearSlideWithGrabberOpMode extends LinearOpMode {
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + teamHardwareMap.runTime.toString());
-            telemetry.addData("Left Stick X", leftStickXInput);
-            telemetry.addData("Left Stick Y", leftStickYInput);
-            telemetry.addData("FLW", teamHardwareMap.frontLeftMotor.getPower());
-            telemetry.addData("FRW", teamHardwareMap.frontRightMotor.getPower());
-            telemetry.addData("BLW", teamHardwareMap.backLeftMotor.getPower());
-            telemetry.addData("BRW", teamHardwareMap.backRightMotor.getPower());
             telemetry.addData("Speed", String.format("%.2f", mecanumHelper.speed));
+            int wholeNumSpeed = (int)(mecanumHelper.speed * 10);
+            for (int i = 0; i < wholeNumSpeed; i++) {
+                telemetry.addData("#########################", i);
+            }
             telemetry.update();
-
         }
     }
 }
