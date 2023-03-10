@@ -38,16 +38,16 @@ public class MecanumHelper {
     public void SetMotorPower(Motor motor, double power) {
         switch (motor) {
             case FRW:
-                frontRightMotor.setPower(-power * (setSpeedToPoint4 ? speed : 0.4));
+                frontRightMotor.setPower(-power * (!setSpeedToPoint4 ? speed : 0.4));
                 break;
             case BRW:
-                backRightMotor.setPower(power * (setSpeedToPoint4 ? speed : 0.4));
+                backRightMotor.setPower(power * (!setSpeedToPoint4 ? speed : 0.4));
                 break;
             case BLW:
-                backLeftMotor.setPower(-power * (setSpeedToPoint4 ? speed : 0.4));
+                backLeftMotor.setPower(-power * (!setSpeedToPoint4 ? speed : 0.4));
                 break;
             case FLW:
-                frontLeftMotor.setPower(power * (setSpeedToPoint4 ? speed : 0.4));
+                frontLeftMotor.setPower(power * (!setSpeedToPoint4 ? speed : 0.4));
                 break;
         }
     }
