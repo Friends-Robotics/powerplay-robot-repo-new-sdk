@@ -17,12 +17,15 @@ public class MecanumHelper {
 
     public double speed;
 
+    public boolean setSpeedToPoint4;
+
     public MecanumHelper(DcMotor frontRightMotor, DcMotor backRightMotor, DcMotor backLeftMotor, DcMotor frontLeftMotor, boolean useTargetPos) {
         this.frontRightMotor = frontRightMotor;
         this.backRightMotor = backRightMotor;
         this.backLeftMotor = backLeftMotor;
         this.frontLeftMotor = frontLeftMotor;
         this.speed = 0.6;
+        this.setSpeedToPoint4 = false;
 
         if (useTargetPos) {
             frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -35,16 +38,16 @@ public class MecanumHelper {
     public void SetMotorPower(Motor motor, double power) {
         switch (motor) {
             case FRW:
-                frontRightMotor.setPower(-power * speed);
+                frontRightMotor.setPower(-power * (setSpeedToPoint4 ? speed : 0.4));
                 break;
             case BRW:
-                backRightMotor.setPower(power * speed);
+                backRightMotor.setPower(power * (setSpeedToPoint4 ? speed : 0.4));
                 break;
             case BLW:
-                backLeftMotor.setPower(-power * speed);
+                backLeftMotor.setPower(-power * (setSpeedToPoint4 ? speed : 0.4));
                 break;
             case FLW:
-                frontLeftMotor.setPower(power * speed);
+                frontLeftMotor.setPower(power * (setSpeedToPoint4 ? speed : 0.4));
                 break;
         }
     }
